@@ -1,0 +1,292 @@
+/* ==========================================================================
+   The hero: a full-bleed shader sheet with the glyph rows laid over it.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  width: 100%;
+  /* The sheet occupies the top of the viewport; the selector sits below it
+     without needing a scroll on a 900px-tall screen. */
+  height: clamp(400px, 62vh, 620px);
+  background: var(--ground);
+  border-bottom: var(--band) solid var(--ink);
+  overflow: hidden;
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Fallback sheet for when WebGL2 is unavailable, so the hero still reads as a
+     ruled board rather than an empty rectangle. The live canvas paints over this
+     with the same 32px drafting rhythm the body ground uses. */
+  background-image:
+    linear-gradient(var(--rule-hair) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule-hair) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* The glyph rows sit exactly on the shader's bands, so the two layers read as
+   one drawing. The percentages mirror the GLSL band constants: ghost 57.5–70.5,
+   plain 34–52.5, cipher 15.5–33.5. If one side changes, both must. */
+.hero__rows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  padding-inline: clamp(16px, 4vw, 64px);
+}
+
+.hero__row--plain {
+  top: 34%;
+  height: 18.5%;
+}
+
+.hero__row--cipher {
+  top: 15.5%;
+  height: 18%;
+  border-top: 1px dashed var(--rule);
+}
+
+.hero__rowlabel {
+  flex-shrink: 0;
+  min-width: 92px;
+}
+
+.hero__glyphs {
+  display: flex;
+  gap: clamp(1px, 0.4vw, 4px);
+  overflow: hidden;
+  flex-wrap: nowrap;
+}
+
+.hero__glyph {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 3.4vw, 2.6rem);
+  line-height: 1;
+  font-weight: 600;
+  color: var(--ink);
+  /* Each glyph lands a beat after the one before it, so the row reads as a
+     left-to-right substitution rather than a flat string. */
+  animation: glyph-land 620ms cubic-bezier(0.2, 0.9, 0.25, 1) backwards;
+  animation-delay: calc(var(--i) * 42ms);
+}
+
+.hero__glyph.is-cipher {
+  color: var(--signal);
+  font-weight: 800;
+}
+
+.hero__glyph.is-hot {
+  opacity: 0.55;
+}
+
+/* The decrypt ghost row that sits above the two main rows. */
+.hero__row--ghost {
+  height: 12%;
+  opacity: 0.5;
+}
+
+@keyframes glyph-land {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35em);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero__shift {
+  position: absolute;
+  left: clamp(16px, 4vw, 64px);
+  /* Clear of the top bar, matching .hero__title. */
+  top: clamp(72px, 12vh, 104px);
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border: var(--border);
+  background: var(--ground-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.hero__shiftval {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--signal);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The title block overlays the upper right of the sheet, as on a real drawing.
+   It sits clear of the top bar: the bar is 2px-bordered and roughly 52px tall,
+   so anything anchored to the sheet's own top would slide underneath it. */
+.hero__title {
+  position: absolute;
+  top: clamp(72px, 12vh, 104px);
+  right: clamp(16px, 4vw, 64px);
+  /* Bounded so the mega type cannot run off the sheet at any width. */
+  max-width: min(440px, 42vw);
+  text-align: right;
+}
+
+/* Sized against the box, not the viewport: at 4.4rem the word is wider than
+   440px and clips, so the cap is what keeps it on the sheet. */
+.hero__title h1 {
+  font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-2);
+  /* A long word must break rather than overflow the sheet. */
+  overflow-wrap: anywhere;
+}
+
+.hero__title p {
+  font-size: var(--fs-small);
+  color: var(--ink-dim);
+  line-height: 1.45;
+}
+
+.hero__rule {
+  height: 3px;
+  background: var(--signal);
+  margin-bottom: var(--sp-3);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    height: clamp(340px, 52vh, 460px);
+  }
+
+  .hero__title {
+    /* The mobile top bar wraps to two rows (~76px), so the sheet's own top
+       edge is not a safe anchor -- the title would sit behind it. */
+    position: absolute;
+    top: clamp(84px, 15vh, 104px);
+    left: var(--sp-4);
+    right: var(--sp-4);
+    max-width: none;
+    text-align: left;
+    padding: 0;
+  }
+
+  .hero__title h1 {
+    font-size: clamp(1.6rem, 9vw, 2.4rem);
+  }
+
+  /* The lead is dropped on narrow screens rather than clipped: the hero sheet
+     is too short to carry a paragraph and two glyph rows. */
+  .hero__title p {
+    display: none;
+  }
+
+  /* Rows stay absolutely placed so they keep matching the shader bands. */
+  .hero__row {
+    gap: var(--sp-3);
+    padding-inline: var(--sp-4);
+  }
+
+  .hero__row--plain {
+    top: 30%;
+    height: 17%;
+  }
+
+  .hero__row--cipher {
+    top: 11%;
+    height: 17%;
+  }
+
+  .hero__rowlabel {
+    min-width: 58px;
+    font-size: 0.5625rem;
+  }
+
+  .hero__shift {
+    top: auto;
+    bottom: var(--sp-3);
+    left: var(--sp-4);
+    right: auto;
+    margin: 0;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__glyph {
+    font-size: clamp(0.95rem, 5.2vw, 1.5rem);
+  }
+
+  .hero__rowlabel {
+    min-width: 52px;
+    font-size: 0.5625rem;
+  }
+}
+
+/* ------------------------------------------------------------------ eggs -- */
+
+.eggs {
+  border-bottom: var(--band) solid var(--ink);
+  background: var(--ground-2);
+  padding-block: var(--sp-5);
+}
+
+.eggs__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+/* --------------------------------------------------------------- picker -- */
+
+.picker {
+  background: var(--ground);
+  padding-block: var(--sp-7);
+}
+
+.picker__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.picker__controls {
+  display: grid;
+  /* Three children: filter, select, button. The button takes its content width
+     and the two fields share the rest, so it never stretches across the row. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: var(--sp-3);
+  align-items: end;
+}
+
+.picker__result {
+  margin-top: var(--sp-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed var(--rule);
+}
+
+@media (max-width: 620px) {
+  .picker__controls {
+    grid-template-columns: 1fr;
+  }
+}

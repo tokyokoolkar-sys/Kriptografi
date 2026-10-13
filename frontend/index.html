@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Kriptografi — a drafting table for algorithms. Caesar through AES and RSA, written from scratch and verified against published test vectors."
+    />
+    <title>Kriptografi · Meja gambar untuk algoritma</title>
+
+    <!-- Two faces only. Archivo for prose, JetBrains Mono for every datum.
+         Preloaded so the first paint never shows a fallback. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Apply the stored theme before first paint so the page never flashes
+      // the wrong ground. Mirrors usePersistent()'s storage key.
+      try {
+        const stored = localStorage.getItem("kriptografi.theme");
+        if (stored) document.documentElement.dataset.theme = stored;
+        const lang = localStorage.getItem("kriptografi.lang");
+        if (lang) document.documentElement.lang = lang;
+      } catch (e) {
+        /* private mode: fall through to the defaults already on <html> */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,740 @@
+/* ==========================================================================
+   Components — every atom rebuilt in the drafting-board language.
+   ========================================================================== */
+
+/* --- Plate: the fundamental container ------------------------------------ */
+
+.plate {
+  background: var(--ground-2);
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.plate--flush {
+  box-shadow: none;
+}
+
+.plate--signal {
+  border-color: var(--signal);
+  box-shadow: var(--shadow-signal);
+}
+
+.plate__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--rule);
+  background: var(--ground-3);
+}
+
+/* The small tab that heads every plate, like a module header on a spec sheet. */
+.plate__tab {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 2px var(--sp-2);
+  background: var(--signal);
+  color: var(--signal-ink);
+  white-space: nowrap;
+}
+
+.plate__tab--quiet {
+  background: transparent;
+  color: var(--ink-dim);
+  border: 1px solid var(--rule);
+}
+
+.plate__body {
+  padding: var(--sp-4);
+}
+
+.plate__body--tight {
+  padding: var(--sp-3);
+}
+
+.plate__body--flush {
+  padding: 0;
+}
+
+/* --- Title block: the drafting signature --------------------------------- */
+
+.titleblock {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  border: var(--border-heavy);
+  background: var(--ground-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+}
+
+.titleblock__cell {
+  padding: var(--sp-2) var(--sp-3);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  min-width: 0;
+}
+
+.titleblock__cell:last-child {
+  border-right: 0;
+}
+
+.titleblock__key {
+  color: var(--ink-faint);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.titleblock__val {
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* --- Buttons: hard shadow, pressed by translation ------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--ground-3);
+  color: var(--ink);
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: transform 90ms ease, box-shadow 90ms ease, background-color 120ms;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--signal-soft);
+  border-color: var(--signal);
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  background: var(--signal);
+  color: var(--signal-ink);
+  border-color: var(--ink);
+  box-shadow: var(--shadow-signal);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--signal);
+  filter: brightness(1.1);
+}
+
+.btn--ghost {
+  box-shadow: none;
+  background: transparent;
+}
+
+.btn--sm {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-micro);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* --- Form controls ------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: var(--sp-3);
+  background: var(--ground);
+  color: var(--ink);
+  border: var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: var(--shadow-signal);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--ink-faint);
+}
+
+.input:disabled,
+.select:disabled,
+.textarea:disabled {
+  opacity: 0.5;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+/* The select needs an explicit arrow that survives both themes. */
+.select {
+  appearance: none;
+  padding-right: var(--sp-7);
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 18px top 50%, right 13px top 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.select option {
+  background: var(--ground-2);
+  color: var(--ink);
+}
+
+/* Segmented control for encrypt/decrypt and similar binary choices. */
+.segmented {
+  display: inline-flex;
+  border: var(--border);
+  background: var(--ground);
+  overflow: hidden;
+}
+
+.segmented__opt {
+  padding: var(--sp-2) var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-dim);
+  border-right: 1px solid var(--rule);
+  transition: background-color 120ms, color 120ms;
+}
+
+.segmented__opt:last-child {
+  border-right: 0;
+}
+
+.segmented__opt[aria-pressed="true"] {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
+.segmented__opt:hover:not([aria-pressed="true"]) {
+  background: var(--signal-soft);
+  color: var(--ink);
+}
+
+/* --- Dense mosaic: the algorithm page grid ------------------------------- */
+
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--sp-4);
+}
+
+.mosaic--wide {
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+}
+
+.mosaic__cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mosaic__cell > .plate {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mosaic__cell .plate__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* --- ASCII table: real characters, monospace, no wrapping ---------------- */
+
+.ascii {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+}
+
+.ascii caption {
+  text-align: left;
+  padding-bottom: var(--sp-2);
+  color: var(--ink-faint);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+
+.ascii th {
+  text-align: left;
+  padding: var(--sp-2);
+  color: var(--ink-faint);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule-strong);
+  white-space: nowrap;
+}
+
+.ascii td {
+  padding: var(--sp-2);
+  border-bottom: 1px dashed var(--rule-hair);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.ascii tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ascii tbody tr:hover td {
+  background: var(--signal-soft);
+}
+
+.ascii .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+
+.ascii .is-signal {
+  color: var(--signal);
+  font-weight: 700;
+}
+
+.ascii .is-good {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Scrollable wrapper so a long step trace never blows out the layout. */
+.ascii-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* --- Verdict marks: verification results --------------------------------- */
+
+.mark {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 1px var(--sp-2);
+}
+
+.mark--pass {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
+.mark--fail {
+  background: transparent;
+  color: var(--signal);
+  border: 2px solid var(--signal);
+}
+
+.mark--idle {
+  background: transparent;
+  color: var(--ink-faint);
+  border: 1px solid var(--rule);
+}
+
+/* --- Result readout: where output lands ---------------------------------- */
+
+.readout {
+  background: var(--ground);
+  border: var(--border);
+  padding: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  min-height: 44px;
+}
+
+.readout--signal {
+  border-color: var(--signal);
+  box-shadow: var(--shadow-signal);
+}
+
+.readout--empty {
+  color: var(--ink-faint);
+}
+
+/* --- Char grid: the alphabet, drawn as cells ----------------------------- */
+
+.chars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+/* Tall enough to hold the glyph and its index without the two colliding. */
+.chars__cell {
+  width: 28px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1;
+  background: var(--ground);
+  position: relative;
+}
+
+/* The index sits on its own line under the glyph, not over it. */
+.chars__cell small {
+  font-size: 7px;
+  line-height: 1;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+
+.chars__cell--hot {
+  border-color: var(--signal);
+  background: var(--signal-soft);
+  color: var(--signal);
+  font-weight: 700;
+}
+
+.chars__cell--hot small {
+  color: var(--signal);
+}
+
+/* --- Banner strip: the hard band under the hero -------------------------- */
+
+.band {
+  border-block: var(--band) solid var(--ink);
+  background: var(--ground-2);
+  padding-block: var(--sp-6);
+}
+
+.band--signal {
+  background: var(--signal);
+  color: var(--signal-ink);
+  border-color: var(--ink);
+}
+
+/* --- Easter egg tile ----------------------------------------------------- */
+
+.egg {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border: var(--border);
+  background: var(--ground-2);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  width: 100%;
+  transition: transform 90ms ease, box-shadow 90ms ease;
+}
+
+.egg:hover {
+  border-color: var(--signal);
+  background: var(--signal-soft);
+}
+
+.egg:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.egg[aria-pressed="true"] {
+  border-color: var(--signal);
+  box-shadow: var(--shadow-signal);
+}
+
+.egg__glyph {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--signal);
+  flex-shrink: 0;
+  width: 2ch;
+  text-align: center;
+}
+
+.egg__body {
+  min-width: 0;
+}
+
+.egg__title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+}
+
+.egg__note {
+  font-size: var(--fs-micro);
+  color: var(--ink-dim);
+  display: block;
+  margin-top: 2px;
+}
+
+/* --- Header bar ---------------------------------------------------------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--ground);
+  border-bottom: var(--border-heavy);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding-block: var(--sp-3);
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: var(--fs-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar__brand span:first-child {
+  color: var(--signal);
+}
+
+.topbar__nav {
+  display: flex;
+  gap: var(--sp-1);
+  margin-left: auto;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topbar__link {
+  padding: var(--sp-2) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.topbar__link:hover {
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.topbar__link.is-active {
+  color: var(--signal);
+  border-color: var(--signal);
+  background: var(--signal-soft);
+}
+
+/* --- Toggle group (theme + language) ------------------------------------- */
+
+.toggles {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+.toggle {
+  width: 38px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule-strong);
+  background: var(--ground-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  line-height: 1;
+  transition: background-color 120ms, color 120ms, border-color 120ms;
+}
+
+.toggle:hover {
+  border-color: var(--signal);
+  background: var(--signal-soft);
+}
+
+.toggle[aria-pressed="true"] {
+  background: var(--signal);
+  border-color: var(--ink);
+  color: var(--signal-ink);
+}
+
+/* --- Spec strip: verification evidence on the landing -------------------- */
+
+.specstrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  border: var(--border-heavy);
+  background: var(--ground-2);
+}
+
+.specstrip__cell {
+  padding: var(--sp-3) var(--sp-4);
+  border-right: 1px solid var(--rule);
+  min-width: 0;
+}
+
+.specstrip__cell:last-child {
+  border-right: 0;
+}
+
+.specstrip__n {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--signal);
+  display: block;
+}
+
+.specstrip__k {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: block;
+  margin-top: var(--sp-1);
+}
+
+/* --- Error note ---------------------------------------------------------- */
+
+/* A full border rather than a thick accent bar on one edge: the side-tab accent
+   reads as a stock AI-generated card tell, and this surface's language is drawn
+   rules, not one-sided highlights. */
+.note {
+  padding: var(--sp-3);
+  border: var(--border);
+  border-color: var(--signal);
+  background: var(--signal-soft);
+  font-size: var(--fs-small);
+}
+
+.note--quiet {
+  border-color: var(--rule-strong);
+  background: var(--ground-3);
+  color: var(--ink-dim);
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+.foot {
+  border-top: var(--border-heavy);
+  padding-block: var(--sp-6);
+  margin-top: var(--sp-8);
+}
+
+.foot__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@media (max-width: 720px) {
+  /* The bar wraps to two rows on narrow screens, which pushes it over the top
+     of the hero sheet. Let the nav scroll sideways on one row instead. */
+  .topbar__inner {
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    padding-block: var(--sp-2);
+  }
+
+  .topbar__nav {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .topbar__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topbar__link {
+    flex-shrink: 0;
+    padding: var(--sp-1) var(--sp-2);
+  }
+
+  .toggles {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 860px) {
+  .mosaic,
+  .mosaic--wide {
+    grid-template-columns: 1fr;
+  }
+
+  .titleblock {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .specstrip {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}

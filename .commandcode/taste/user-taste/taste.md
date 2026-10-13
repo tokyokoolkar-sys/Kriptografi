@@ -1,0 +1,12 @@
+# User Taste
+- Wants clarifying questions asked up front, before any implementation starts — stated explicitly ("To begin with you can ask me questions"). Asking first is welcome and expected, not an interruption. Confidence: 0.9
+- Prefers strictly phased delivery: backend built *and* all tests green before any frontend/UI work begins. Treats "everything green" as a hard gate, not a checkpoint. Confidence: 0.9
+- Prefers comprehensive scope when offered — explicitly invited going "all out" past the listed requirements, and opted for full-coverage implementations (e.g. complete DES rather than a reduced version) over scoped-down variants. Breadth beats minimalism. Confidence: 0.85
+- Requires verification against external references, not just self-consistency: chose official published test vectors (FIPS/NIST/RFC) and cross-checks against the standard library over quick round-trip tests. Confidence: 0.85
+- Wants a working, demonstrable app — described the goal as a "simple cypher and de-cypher app", i.e. runnable software rather than a library in the abstract. Confidence: 0.8
+- Prefers algorithms implemented from first principles rather than delegated to a library — explicitly chose "pure manual, no library" over hybrid or library-first approaches. Confidence: 0.8
+- Values educational, explanatory code: expect the *why* alongside the implementation (algorithmic derivations, step traces, explicit security caveats). The long teaching-style docstrings drew no pushback. Confidence: 0.7
+- Backend default: Python + FastAPI, packaged via `pyproject.toml` with dev dependencies in an optional extra, pytest for the test suite. Confidence: 0.8
+- Comfortable with a conventional layered package layout (module per domain, routers per domain, dedicated schemas file) rather than a flat script dump. Confidence: 0.7
+- Writes in English but uses Indonesian technical vocabulary (FPB, algoritma Euclid, sandi substitusi/transposisi, invers modulo, pustaka kriptografi). Indonesian replies and Indonesian technical terms are welcome. Confidence: 0.7
+- Working through a university cryptography course; the requested topics (modular arithmetic, gcd/Euclid, modular inverse, substitution vs. transposition, crypto libraries) map to standard syllabus units. Frame explanations pedagogically. Confidence: 0.7
